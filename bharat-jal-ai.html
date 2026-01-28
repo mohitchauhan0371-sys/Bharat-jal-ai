@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharat-Jal AI - Ultimate Water Intelligence Platform</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #00d4aa;
+            --warning: #ffc107;
+            --danger: #ff4757;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .bg-animation span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(102, 126, 234, 0.5);
+            animation: float 25s infinite;
+            border-radius: 50%;
+        }
+
+        .bg-animation span:nth-child(1) { left: 10%; animation-duration: 20s; }
+        .bg-animation span:nth-child(2) { left: 30%; animation-duration: 25s; width: 30px; height: 30px; }
+        .bg-animation span:nth-child(3) { left: 50%; animation-duration: 22s; }
+        .bg-animation span:nth-child(4) { left: 70%; animation-duration: 28s; width: 25px; height: 25px; }
+        .bg-animation span:nth-child(5) { left: 90%; animation-duration: 30s; }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text h2 {
+            font-size: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #1e272e;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .hero {
+            max-width: 1400px;
+            margin: 60px auto;
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 56px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .hero-stat {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #f093fb;
+            margin-bottom: 5px;
+        }
+
+        .hero-stat-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .visual-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+            animation: float-card 6s ease-in-out infinite;
+        }
+
+        @keyframes float-card {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .visual-icon {
+            font-size: 80px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 30px;
+        }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 35px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #f0f0f0;
+        }
+
+        .panel-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+        }
+
+        .panel-title h2 {
+            font-size: 28px;
+            color: #1e272e;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .panel-title p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1e272e;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px 15px 15px 50px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analyze-btn:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .analyze-btn:hover:before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 48px rgba(102, 126, 234, 0.5);
+        }
+
+        .results-dashboard {
+            display: none;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .dashboard-title {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dashboard-subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .modules-grid {
+            display: grid;
+            gap: 30px;
+        }
+
+        .module-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+            border-color: var(--primary);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #f0f0f0;
+        }
+
+        .module-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+        }
+
+        .module-title {
+            flex: 1;
+        }
+
+        .module-title h3 {
+            font-size: 26px;
+            color: #1e272e;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .module-title p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .risk-container {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .risk-low {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .risk-medium {
+            background: linear-gradient(135deg, #ffd89b 0%, #ff8c5a 100%);
+            color: white;
+        }
+
+        .risk-high {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .risk-extreme {
+            background: linear-gradient(135deg, #ff4757 0%, #c0392b 100%);
+            color: white;
+            animation: pulse-extreme 2s infinite;
+        }
+
+        @keyframes pulse-extreme {
+            0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+            50% { transform: scale(1.05); box-shadow: 0 16px 48px rgba(255, 71, 87, 0.5); }
+        }
+
+        .alert-box {
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .alert-icon {
+            font-size: 28px;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe7a0 100%);
+            border-left: 5px solid var(--warning);
+            color: #856404;
+        }
+
+        .alert-critical {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            border-left: 5px solid var(--danger);
+            color: #721c24;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            border-left: 5px solid #0dcaf0;
+            color: #0c5460;
+        }
+
+        .recommendation-section {
+            margin-top: 25px;
+        }
+
+        .recommendation-section h4 {
+            font-size: 20px;
+            color: #1e272e;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .recommendation-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recommendation-list li {
+            padding: 15px 20px;
+            margin: 10px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 4px solid var(--primary);
+            border-radius: 10px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .recommendation-list li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .rec-icon {
+            font-size: 20px;
+        }
+
+        .chart-container {
+            margin-top: 30px;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.98);
+            margin-top: 60px;
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.15);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .footer-logo {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .footer h3 {
+            font-size: 24px;
+            color: #1e272e;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .footer p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .footer-link:hover {
+            color: var(--secondary);
+        }
+
+       
+            @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero-content h1 {
+                font-size: 42px;
+            }
+
+            .nav-menu {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container, .nav-container {
+                padding: 0 20px;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .panel-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">💧</div>
+                <div class="logo-text">
+                    <h2>BHARAT-JAL AI</h2>
+                    <p>Water Intelligence Platform</p>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="#dashboard" class="nav-link">Dashboard</a>
+                <a href="#analytics" class="nav-link">Analytics</a>
+                <a href="#reports" class="nav-link">Reports</a>
+                <a href="#api" class="nav-link">API</a>
+                <button class="nav-btn">🚀 Get Started</button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>
+                India's Most Advanced<br>
+                <span class="gradient-text">Water Intelligence</span><br>
+                Platform
+            </h1>
+            <p>
+                Powered by AI/ML algorithms analyzing 700+ districts, 
+                predicting drought patterns, optimizing water allocation, 
+                and empowering 140 million farmers with real-time insights.
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">700+</div>
+                    <div class="hero-stat-label">Districts Monitored</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">95%</div>
+                    <div class="hero-stat-label">Accuracy Rate</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">24/7</div>
+                    <div class="hero-stat-label">Real-time Analysis</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="visual-card">
+                <div class="visual-icon">🌍</div>
+                <h3 style="text-align: center; color: #1e272e; margin-bottom: 15px;">
+                    Real-Time Monitoring
+                </h3>
+                <p style="text-align: center; color: #666;">
+                    AI-powered satellite integration tracking rainfall, 
+                    groundwater levels, and soil moisture across India
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="control-panel">
+            <div class="panel-header">
+                <div class="panel-icon">📊</div>
+                <div class="panel-title">
+                    <h2>District Analysis Dashboard</h2>
+                    <p>Enter district parameters for comprehensive AI-powered water security analysis</p>
+                </div>
+            </div>
+
+            <div class="input-grid">
+                <div class="form-group">
+                    <label>🗺️ District Name</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📍</span>
+                        <input type="text" id="district" placeholder="e.g., Marathwada" value="Marathwada">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>💧 Available Water (ML)</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">💦</span>
+                        <input type="number" id="waterAvailable" value="800" min="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🚰 Groundwater Level (m)</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">⬇️</span>
+                        <input type="number" id="groundwater" value="18" min="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🌡️ Temperature (°C)</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🌡️</span>
+                        <input type="number" id="temperature" value="35" min="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🌧️ Rainfall (mm/month)</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">☔</span>
+                        <input type="number" id="rainfall" value="45" min="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🌾 Agricultural Area (km²)</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🌾</span>
+                        <input type="number" id="agricArea" value="1200" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <button class="analyze-btn" onclick="runComprehensiveAnalysis()">
+                🔬 Run AI Analysis
+            </button>
+        </div>
+
+        <div id="resultsDashboard" class="results-dashboard">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">🎯 Comprehensive Analysis Results</h2>
+                <p class="dashboard-subtitle" id="analysisDistrict"></p>
+            </div>
+
+            <div class="modules-grid">
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🔮</div>
+                        <div class="module-title">
+                            <h3>Drought Risk Prediction</h3>
+                            <p>AI-powered risk assessment using multi-parameter analysis</p>
+                        </div>
+                    </div>
+                    <div id="droughtModule"></div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">💧</div>
+                        <div class="module-title">
+                        <h3>Smart Water Allocation</h3>
+                            <p>Optimized distribution based on priority sectors</p>
+                        </div>
+                    </div>
+                    <div id="allocationModule"></div>
+                    <div id="allocationChart" class="chart-container"></div>
+                </div>
+                  
+                        <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">🌾</div>
+                    <div class="module-title">
+                        <h3>Farmer Advisory System</h3>
+                        <p>Crop recommendations and irrigation strategies</p>
+                    </div>
+                </div>
+                <div id="farmerModule"></div>
+            </div>
+
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">🚰</div>
+                    <div class="module-title">
+                        <h3>Groundwater Guardian</h3>
+                        <p>Real-time monitoring and conservation alerts</p>
+                    </div>
+                </div>
+                <div id="groundwaterModule"></div>
+                <div id="groundwaterChart" class="chart-container"></div>
+            </div>
+
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">🌡️</div>
+                    <div class="module-title">
+                        <h3>Climate Impact Analysis</h3>
+                        <p>Temperature and evaporation risk assessment</p>
+                    </div>
+                </div>
+                <div id="climateModule"></div>
+            </div>
+
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">📈</div>
+                    <div class="module-title">
+                        <h3>Predictive Analytics</h3>
+                        <p>6-month forecast and trend analysis</p>
+                    </div>
+                </div>
+                <div id="predictiveModule"></div>
+                <div id="predictionChart" class="chart-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-logo">💧</div>
+        <h3>BHARAT-JAL AI</h3>
+        <p>Empowering India with intelligent water management solutions</p>
+        <div class="footer-links">
+            <a href="#" class="footer-link">About Us</a>
+            <a href="#" class="footer-link">Documentation</a>
+            <a href="#" class="footer-link">API Access</a>
+            <a href="#" class="footer-link">Contact</a>
+            <a href="#" class="footer-link">Privacy Policy</a>
+        </div>
+        <p style="margin-top: 20px; font-size: 14px;">© 2024 Bharat-Jal AI. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+    function runComprehensiveAnalysis() {
+        const district = document.getElementById('district').value;
+        const waterAvailable = parseFloat(document.getElementById('waterAvailable').value);
+        const groundwater = parseFloat(document.getElementById('groundwater').value);
+        const temperature = parseFloat(document.getElementById('temperature').value);
+        const rainfall = parseFloat(document.getElementById('rainfall').value);
+        const agricArea = parseFloat(document.getElementById('agricArea').value);
+
+        document.getElementById('resultsDashboard').style.display = 'block';
+        document.getElementById('analysisDistrict').textContent = `Analysis for ${district} District`;
+
+        const droughtData = calculateDroughtRisk(rainfall, temperature, groundwater);
+        document.getElementById('droughtModule').innerHTML = `
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-value">${droughtData.score}</div>
+                    <div class="stat-label">Drought Risk Score</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${droughtData.rainfallDeficit}%</div>
+                    <div class="stat-label">Rainfall Deficit</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${droughtData.soilMoisture}%</div>
+                    <div class="stat-label">Soil Moisture</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${droughtData.evaporation}</div>
+                    <div class="stat-label">Evaporation Rate</div>
+                </div>
+            </div>
+            <div class="risk-container">
+                <span class="risk-badge ${droughtData.class}">${droughtData.level}</span>
+            </div>
+            <div class="alert-box ${droughtData.alertClass}">
+                <span class="alert-icon">${droughtData.alertIcon}</span>
+                <div>${droughtData.alertMessage}</div>
+            </div>
+        `;
+
+        const allocation = allocateWater(droughtData.level, waterAvailable);
+        document.getElementById('allocationModule').innerHTML = `
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-value">${allocation.drinking.amount}</div>
+                    <div class="stat-label">Drinking Water (ML)</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${allocation.drinking.percent}%">
+                            ${allocation.drinking.percent}%
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${allocation.agriculture.amount}</div>
+                    <div class="stat-label">Agriculture (ML)</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${allocation.agriculture.percent}%">
+                            ${allocation.agriculture.percent}%
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${allocation.industry.amount}</div>
+                    <div class="stat-label">Industry (ML)</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${allocation.industry.percent}%">
+                            ${allocation.industry.percent}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const pieData = [{
+            values: [allocation.drinking.percent, allocation.agriculture.percent, allocation.industry.percent],
+            labels: ['Drinking Water', 'Agriculture', 'Industry'],
+            type: 'pie',
+            marker: {
+                colors: ['#667eea', '#764ba2', '#f093fb']
+            },
+            textinfo: 'label+percent',
+            textfont: { size: 14, color: 'white', family: 'Inter' }
+        }];
+
+        Plotly.newPlot('allocationChart', pieData, {
+            title: { text: 'Water Allocation Distribution', font: { size: 20, family: 'Poppins' } },
+            height: 400,
+            margin: { t: 50, b: 30, l: 30, r: 30 }
+        });
+
+        const advisory = getFarmerAdvisory(droughtData.level, rainfall);
+        document.getElementById('farmerModule').innerHTML = `
+            <div class="alert-box ${advisory.alertClass}">
+                <span class="alert-icon">${advisory.icon}</span>
+                <div><strong>${advisory.alert}</strong></div>
+            </div>
+            <div class="recommendation-section">
+                <h4>🌱 Recommended Crops</h4>
+                <ul class="recommendation-list">
+                    ${advisory.crops.map(crop => `<li><span class="rec-icon">🌾</span> ${crop}</li>`).join('')}
+                </ul>
+            </div>
+            <div class="recommendation-section">
+                <h4>💧 Irrigation Techniques</h4>
+                <ul class="recommendation-list">
+                    ${advisory.techniques.map(tech => `<li><span class="rec-icon">💦</span> ${tech}</li>`).join('')}
+                </ul>
+            </div>
+            <div class="recommendation-section">
+                <h4>🛠️ Water Conservation Practices</h4>
+                <ul class="recommendation-list">
+                    ${advisory.practices.map(practice => `<li><span class="rec-icon">✅</span> ${practice}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+
+        const gwData = analyzeGroundwater(groundwater, rainfall);
+        document.getElementById('groundwaterModule').innerHTML = `
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-value">${groundwater}m</div>
+                    <div class="stat-label">Current Level</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${gwData.depletion}</div>
+                    <div class="stat-label">Monthly Depletion</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${gwData.recharge}</div>
+                    <div class="stat-label">Recharge Rate</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${gwData.monthsToCritical}</div>
+                    <div class="stat-label">Months to Critical</div>
+                </div>
+            </div>
+            <div class="alert-box ${gwData.statusClass}">
+                <span class="alert-icon">${gwData.statusIcon}</span>
+                <div><strong>Status: ${gwData.status}</strong></div>
+            </div>
+            <div class="recommendation-section">
+                <h4>📋 Action Items</h4>
+                <ul class="recommendation-list">
+                    ${gwData.recommendations.map(rec => `<li><span class="rec-icon">🎯</span> ${rec}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+
+        const gwTrace = {
+            x: gwData.months,
+            y: gwData.projections,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Projected Level',
+            line: { color: '#667eea', width: 3 },
+            marker: { size: 8 }
+        };
+
+        Plotly.newPlot('groundwaterChart', [gwTrace], {
+            title: { text: '6-Month Groundwater Projection', font: { size: 20, family: 'Poppins' } },
+            xaxis: { title: 'Month' },
+            yaxis: { title: 'Water Level (meters)' },
+            height: 350
+        });
+
+        const climate = analyzeClimate(temperature, rainfall);
+        document.getElementById('climateModule').innerHTML = `
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-value">${temperature}°C</div>
+                    <div class="stat-label">Current Temperature</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${climate.heatIndex}</div>
+                    <div class="stat-label">Heat Index</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${climate.evaporationRate}</div>
+                    <div class="stat-label">Evaporation (mm/day)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${climate.waterLoss}</div>
+                    <div class="stat-label">Daily Water Loss (ML)</div>
+                </div>
+            </div>
+            <div class="alert-box ${climate.alertClass}">
+                <span class="alert-icon">${climate.icon}</span>
+                <div>${climate.message}</div>
+            </div>
+            <div class="recommendation-section">
+                <h4>🌡️ Climate Adaptation Strategies</h4>
+                <ul class="recommendation-list">
+                    ${climate.strategies.map(s => `<li><span class="rec-icon">🔥</span> ${s}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+
+        const prediction = generatePredictions(droughtData.score, groundwater, rainfall);
+        document.getElementById('predictiveModule').innerHTML = `
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-value">${prediction.nextMonth.risk}%</div>
+                    <div class="stat-label">Next Month Risk</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${prediction.threeMonth.risk}%</div>
+                    <div class="stat-label">3-Month Risk</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${prediction.sixMonth.risk}%</div>
+                    <div class="stat-label">6-Month Risk</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">${prediction.confidence}%</div>
+                    <div class="stat-label">AI Confidence</div>
+                </div>
+            </div>
+            <div class="recommendation-section">
+                <h4>🔮 Future Outlook</h4>
+                <ul class="recommendation-list">
+                    ${prediction.insights.map(i => `<li><span class="rec-icon">💡</span> ${i}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+
+        const predTrace = {
+            x: prediction.timeline,
+            y: prediction.riskTrend,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Risk Trend',
+            line: { color: '#f093fb', width: 3 },
+            fill: 'tozeroy',
+            marker: { size: 10 }
+        };
+
+        Plotly.newPlot('predictionChart', [predTrace], {
+            title: { text: '6-Month Drought Risk Forecast', font: { size: 20, family: 'Poppins' } },
+            xaxis: { title: 'Timeline' },
+            yaxis: { title: 'Risk Level (%)' },
+            height: 350
+        });
+
+        document.getElementById('resultsDashboard').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function calculateDroughtRisk(rainfall, temp, gw) {
+        const normalRainfall = 100;
+        const rainfallDeficit = ((normalRainfall - rainfall) / normalRainfall * 100).toFixed(1);
+        const tempFactor = (temp - 25) * 2;
+        const gwFactor = (30 - gw) * 1.5;
+        
+        const score = Math.min(100, Math.max(0, 
+            (parseFloat(rainfallDeficit) * 0.5) + (tempFactor * 0.3) + (gwFactor * 0.2)
+        )).toFixed(1);
+
+        const soilMoisture = Math.max(10, 100 - parseFloat(score)).toFixed(1);
+        const evaporation = (temp * 0.3 + (100 - rainfall) * 0.1).toFixed(1);
+
+        let level, cls, alertClass, alertIcon, alertMessage;
+
+        if (score > 75) {
+            level = "Extreme Risk";
+            cls = "risk-extreme";
+            alertClass = "alert-critical";
+            alertIcon = "🚨";
+            alertMessage = "CRITICAL: Immediate drought mitigation measures required";
+        } else if (score > 50) {
+            level = "High Risk";
+            cls = "risk-high";
+            alertClass = "alert-critical";
+            alertIcon = "⚠️";
+            alertMessage = "HIGH ALERT: Activate emergency water conservation protocols";
+        } else if (score > 25) {
+            level = "Medium Risk";
+            cls = "risk-medium";
+            alertClass = "alert-warning";
+            alertIcon = "⚡";
+            alertMessage = "CAUTION: Monitor situation closely and prepare contingency plans";
+        } else {
+            level = "Low Risk";
+            cls = "risk-low";
+            alertClass = "alert-info";
+            alertIcon = "✅";
+            alertMessage = "NORMAL: Continue regular monitoring and maintenance";
+        }
+
+        return { score, level, class: cls, rainfallDeficit, soilMoisture, evaporation, alertClass, alertIcon, alertMessage };
+    }
+
+    function allocateWater(risk, total) {
+        const allocations = {
+            "Low Risk": { drinking: 40, agriculture: 45, industry: 15 },
+            "Medium Risk": { drinking: 50, agriculture: 35, industry: 15 },
+            "High Risk": { drinking: 60, agriculture: 30, industry: 10 },
+            "Extreme Risk": { drinking: 70, agriculture: 25, industry: 5 }
+        };
+
+        const p = allocations[risk];
+        return {
+            drinking: { percent: p.drinking, amount: (total * p.drinking / 100).toFixed(2) },
+            agriculture: { percent: p.agriculture, amount: (total * p.agriculture / 100).toFixed(2) },
+            industry: { percent: p.industry, amount: (total * p.industry / 100).toFixed(2) }
+        };
+    }
+
+    function getFarmerAdvisory(risk, rainfall) {
+        const advisories = {
+            "Low Risk": {
+                crops: ['Rice (High Water)', 'Wheat', 'Sugarcane', 'Cotton', 'Vegetables'],
+                techniques: ['Flood Irrigation', 'Sprinkler System', 'Surface Irrigation'],
+                practices: ['Regular soil testing', 'Crop rotation', 'Organic farming'],
+                alert: 'Favorable conditions for water-intensive crops',
+                icon: '✅',
+                alertClass: 'alert-info'
+            },
+            "Medium Risk": {
+                crops: ['Maize', 'Soybean', 'Pulses (Moong, Urad)', 'Groundnut', 'Tomatoes'],
+                techniques: ['Sprinkler Irrigation', 'Mulching', 'Drip for vegetables'],
+                practices: ['Rainwater harvesting', 'Soil moisture retention', 'Intercropping'],
+                alert: 'Switch to moderately drought-resistant crops',
+                icon: '⚡',
+                alertClass: 'alert-warning'
+            },
+            "High Risk": {
+                crops: ['Bajra (Pearl Millet)', 'Jowar (Sorghum)', 'Pulses (Moong)', 'Sunflower'],
+                techniques: ['Drip Irrigation (Mandatory)', 'Micro-irrigation', 'Deficit irrigation'],
+                practices: ['Rainwater harvesting', 'Mulching', 'Drought-resistant varieties'],
+                alert: 'URGENT: Only drought-resistant crops recommended',
+                icon: '⚠️',
+                alertClass: 'alert-critical'
+            },
+            "Extreme Risk": {
+                crops: ['Ragi (Finger Millet)', 'Bajra', 'Moong Dal', 'Drought-resistant varieties only'],
+                techniques: ['Drip Irrigation Only', 'Precision agriculture', 'Smart sensors'],
+                practices: ['Consider skipping season', 'Livestock focus', 'Alternative income'],
+                alert: 'CRITICAL: Consider emergency crops or alternative livelihoods',
+                icon: '🚨',
+                alertClass: 'alert-critical'
+            }
+        };
+
+        return advisories[risk];
+    }
+
+    function analyzeGroundwater(level, rainfall) {
+        const depletion = (2.5 - rainfall * 0.01).toFixed(2);
+        const recharge = (rainfall * 0.3).toFixed(1);
+        const monthsToCritical = Math.max(0, ((level - 10) / parseFloat(depletion))).toFixed(1);
+
+        let status, statusClass, statusIcon;
+        if (level < 10) {
+            status = "Critical";
+            statusClass = "alert-critical";
+            statusIcon = "🚨";
+        } else if (level < 20) {
+            status = "Warning";
+            statusClass = "alert-warning";
+            statusIcon = "⚠️";
+        } else {
+            status = "Safe";
+            statusClass = "alert-info";
+            statusIcon = "✅";
+        }
+
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+        const projections = [];
+        let currentLevel = level;
+        for (let i = 0; i < 6; i++) {
+            projections.push(currentLevel.toFixed(1));
+            currentLevel -= parseFloat(depletion);
+        }
+
+        const recommendations = status === "Critical" 
+            ? ["🚨 Emergency: Ban new borewells immediately", "Mandatory drip irrigation for all farms", "Artificial recharge structures in 30 days"]
+            : status === "Warning"
+            ? ["⚠️ Urgent: Install recharge pits", "Monitor illegal borewells", "Restrict new connections"]
+            : ["Continue regular monitoring", "Maintain existing recharge structures", "Promote water conservation"];
+
+        return { depletion, recharge, monthsToCritical, status, statusClass, statusIcon, recommendations, months, projections };
+    }
+
+    function analyzeClimate(temp, rainfall) {
+        const heatIndex = (temp * 1.8 + 32).toFixed(1);
+        const evaporationRate = (temp * 0.25).toFixed(2);
+        const waterLoss = (evaporationRate * 10).toFixed(1);
+
+        let alertClass, icon, message;
+        if (temp > 40) {
+            alertClass = "alert-critical";
+            icon = "🔥";
+            message = "EXTREME HEAT: Critical water loss through evaporation";
+        } else if (temp > 35) {
+            alertClass = "alert-warning";
+            icon = "🌡️";
+            message = "HIGH TEMPERATURE: Increased evaporation rates expected";
+        } else {
+            alertClass = "alert-info";
+            icon = "☀️";
+            message = "MODERATE: Normal evaporation conditions";
+        }
+
+        const strategies = temp > 35
+            ? ["Cover water bodies to reduce evaporation", "Night-time irrigation to minimize losses", "Use shade nets for crops"]
+            : ["Regular monitoring of temperature trends", "Optimize irrigation timing", "Prepare for seasonal variations"];
+
+        return { heatIndex, evaporationRate, waterLoss, alertClass, icon, message, strategies };
+    }
+
+    function generatePredictions(currentRisk, gw, rainfall) {
+        const trend = parseFloat(currentRisk);
+        const nextMonth = { risk: Math.min(100, trend + Math.random() * 10).toFixed(1) };
+        const threeMonth = { risk: Math.min(100, trend + Math.random() * 20).toFixed(1) };
+        const sixMonth = { risk: Math.min(100, trend + Math.random() * 30).toFixed(1) };
+        const confidence = (85 + Math.random() * 10).toFixed(1);
+
+        const timeline = ['Current', '1 Month', '2 Months', '3 Months', '4 Months', '5 Months', '6 Months'];
+        const riskTrend = [trend, nextMonth.risk, (trend + parseFloat(nextMonth.risk))/2, threeMonth.risk, 
+                          (parseFloat(threeMonth.risk) + parseFloat(sixMonth.risk))/2, sixMonth.risk, sixMonth.risk];
+
+        const insights = [
+            `Risk projected to ${parseFloat(sixMonth.risk) > trend ? 'increase' : 'decrease'} by ${Math.abs(parseFloat(sixMonth.risk) - trend).toFixed(1)}% in 6 months`,
+            `Groundwater depletion trend: ${gw < 20 ? 'Critical - immediate action needed' : 'Monitor closely'}`,
+            `Rainfall adequacy: ${rainfall > 80 ? 'Sufficient' : rainfall > 50 ? 'Moderate' : 'Insufficient'}`,
+            `Recommended: ${trend > 50 ? 'Emergency water conservation measures' : 'Continue monitoring'}`
+        ];
+
+        return { nextMonth, threeMonth, sixMonth, confidence, timeline, riskTrend, insights };
+    }
+</script>
+              
